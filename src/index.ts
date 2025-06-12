@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits, Collection  } from 'discord.js';
 import dotenv from 'dotenv';
+import { handleEvents } from './handlers/events.handler';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ const CLIENT = new Client({
 };
 
 CLIENT.commands = new Collection();
+
+handleEvents(CLIENT);
 
 async function main() {
     try {
