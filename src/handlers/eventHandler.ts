@@ -2,7 +2,9 @@ import { Client } from 'discord.js';
 import { readdirSync } from 'fs';
 import path from 'path';
 
-export function handleEvents(CLIENT: Client) {
+export function loadEvents(CLIENT: Client) {
+  const events: string[] = [];
+
   const eventsPath = path.join(__dirname, '..', 'events');
   const eventFiles = readdirSync(eventsPath).filter(file => file.endsWith('.ts') || file.endsWith('.js'));
 
@@ -21,8 +23,8 @@ export function handleEvents(CLIENT: Client) {
       } else {
         CLIENT.on(event.name, (...args) => event.execute(...args, CLIENT));
       }
-
-      console.log(`✅ Event loaded: ${event.name}`);
     });
+    events.push(file.replace('.ts', '').replace('.js', ''));
   }
+  console.log(`[✅]  ${events.length} events loaded.`);
 }
